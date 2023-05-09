@@ -1,0 +1,7 @@
+/* Added some simple stylings for my map class */
+.map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
