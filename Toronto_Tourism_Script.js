@@ -6,15 +6,22 @@ const map = new mapboxgl.Map ({
     container: 'map',
     style: 'mapbox://styles/heisenzilla/clhie6n9u005g01pa9setbtlq',
     center: [-79.347015, 43.651070],
-    zoom: 10,
+    zoom: 9,
 });
 
 //Adding GEOJSON sources 
 map.on('load', () => { 
 
+    //Adding the source for the City Wards data
     map.addSource('City_Wards', {
         type:'geojson',
-        data: 'https://gabcalayan.github.io/Web_Map_1/City_Wards_Data.json',
+        data:'https://gabcalayan.github.io/Web_Map_1/City_Wards_Data.json',
+    });
+
+    //Adding the source for the Neighbourhoods data 
+    map.addSource('Neighbourhood', {
+        type:'geojson',
+        data:'https://gabcalayan.github.io/Web_Map_1/Neighbourhoods.json',
     });
 
     //Visualizing the City Wards layer    
@@ -82,7 +89,7 @@ map.on('load', () => {
             ],
         }
     });
-    //Visualizing the City Wards line borders 
+    //Visualizing the City Wards borders
     map.addLayer({
         'id': 'outline_1',
         'source': 'City_Wards',
@@ -93,5 +100,29 @@ map.on('load', () => {
             'line-color': 'black'
         }
     });
+
+    //Visualizing the Neighborhoods layer 
+    map.addLayer({
+        'id': 'Neighbour',
+        'source': 'Neighbourhood',
+        'type': 'fill',
+        'layout':{},
+        'paint': {
+            'fill-opacity': 0.9,
+            'fill-color': 'yellow'
+        }
+    });
+
+    //Visualizing the Neighbourhoods borders 
+    map.addLayer({
+        'id':'outline_2',
+        'source':'Neighbourhood',
+        'type':'line',
+        'layout':{},
+        'paint': {
+            'line-width': 3,
+            'line-color':'black'
+        }
+    });
     
-});
+}); //Here is the end of the map.load function 
