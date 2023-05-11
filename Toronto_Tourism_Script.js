@@ -101,15 +101,25 @@ map.on('load', () => {
         }
     });
 
-    //Visualizing the Neighborhoods layer 
+    // Visualizing the Neighborhoods layer 
     map.addLayer({
         'id': 'Neighbour',
         'source': 'Neighbourhood',
         'type': 'fill',
         'layout':{},
         'paint': {
-            'fill-opacity': 0.9,
-            'fill-color': 'yellow'
+            'fill-opacity': 1,
+            'fill-color': [
+                'match',
+                ['get', 'CLASSIFICATION_CODE'],
+                'NIA',
+                '#f0e68c',
+                'NA',
+                '#e6e6fa',
+                'EN',
+                '#ff6347',
+                'white'
+            ]
         }
     });
 
