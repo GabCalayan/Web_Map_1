@@ -12,17 +12,23 @@ const map = new mapboxgl.Map ({
 //Adding GEOJSON sources 
 map.on('load', () => { 
 
-    //Adding the source for the City Wards data
+    //Adding the source for the City Wards data (Polygon)
     map.addSource('City_Wards', {
         type:'geojson',
         data:'https://gabcalayan.github.io/Web_Map_1/City_Wards_Data.json',
     });
 
-    //Adding the source for the Neighbourhoods data 
+    //Adding the source for the Neighbourhoods data (Polygon)
     map.addSource('Neighbourhood', {
         type:'geojson',
         data:'https://gabcalayan.github.io/Web_Map_1/Neighbourhoods.json',
     });
+
+    //Adding the source for the Tourism data (Points)
+    map.addSource('Tourism', {
+        type:'geojson',
+        data:'https://gabcalayan.github.io/Web_Map_1/Tourism_Spots.geojson'
+    })
 
     //Visualizing the City Wards layer    
     map.addLayer({
@@ -134,5 +140,22 @@ map.on('load', () => {
             'line-color':'black'
         }
     });
+
+    //Visualizing the Tourism points 
+    map.addLayer({
+        'id':'Tourists',
+        'source':'Tourism',
+        'type':'circle',
+        'paint': {
+            'circle-radius': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                8, 10,
+                10, 5
+            ],
+            'circle-color':'black'
+        },
+    })
     
 }); //Here is the end of the map.load function 
