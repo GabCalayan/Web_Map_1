@@ -9,6 +9,7 @@ const map = new mapboxgl.Map ({
     zoom: 9,
 });
 
+//MAP VISUALIZATION SECTION
 //Adding GEOJSON sources 
 map.on('load', () => { 
 
@@ -157,5 +158,22 @@ map.on('load', () => {
             'circle-color':'black'
         },
     })
+
+//INTERACTIVE SECTION 
+
+//Search control function
+map.addControl(
+    new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl,
+        countries: "ca"
+    })
+);
+
+//Zoom and rotation controls 
+map.addControl(new mapboxgl.NavigationControl());
+
+//Fullscreen option controls 
+map.addControl(new mapboxgl.FullscreenControl());
     
 }); //Here is the end of the map.load function 
