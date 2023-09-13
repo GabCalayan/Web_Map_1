@@ -103,7 +103,7 @@ map.on('load', () => {
         'type': 'line',
         'layout':{},
         'paint': {
-            'line-width': 3,
+            'line-width': 2,
             'line-color': 'black'
         }
     });
@@ -137,27 +137,74 @@ map.on('load', () => {
         'type':'line',
         'layout':{},
         'paint': {
-            'line-width': 3,
+            'line-width': 2,
             'line-color':'black'
         }
     });
 
-    //Visualizing the Tourism points 
+    //Visualizing the Tourism points using GEOID
     map.addLayer({
         'id':'Tourists',
         'source':'Tourism',
         'type':'circle',
-        'paint': {
+        'paint': {    
+            "circle-opacity": 1,
+            "circle-stroke-width": 1,
+            "circle-stroke-color": '#000',
             'circle-radius': [
                 'interpolate',
                 ['linear'],
                 ['zoom'],
-                8, 10,
+                7, 10,
                 10, 5
             ],
-            'circle-color':'black'
+            'circle-color': [
+                'step',
+                ['get', 'GEOID'],
+                'black',
+
+                5, 'green',
+                7, 'green',
+                10, 'green',
+                11, 'green',
+                31, 'green',
+                32, 'green',
+                33, 'green',
+                35, 'green',
+                41, 'green',
+                54, 'green',
+                56, 'green',
+                58, 'green',
+                60, 'green',
+                63, 'green',
+                66, 'green',
+                68, 'green',
+                69, 'green',
+                74, 'green',
+                75, 'green',
+                79, 'green',
+                103, 'green',
+                105, 'green',
+                106, 'green',
+                107, 'green',
+                119, 'green',
+                121, 'green',
+                126, 'green',
+                142, 'green',
+                143, 'green',
+                149, 'green',
+                150, 'green',
+                165, 'green',
+                166, 'green',
+                168, 'green',
+               
+
+            ]
         },
-    })
+        'filter':['any', 
+                ['==', ['get', 'CATEGORY'], 'Nature/ Park'],
+                ]
+    });
 
 //INTERACTIVE SECTION 
 
