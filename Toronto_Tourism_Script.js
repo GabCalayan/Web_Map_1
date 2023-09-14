@@ -6,7 +6,7 @@ const map = new mapboxgl.Map ({
     container: 'map',
     style: 'mapbox://styles/heisenzilla/clhie6n9u005g01pa9setbtlq',
     center: [-79.347015, 43.651070],
-    zoom: 9,
+    zoom: 9.5,
 });
 
 //MAP VISUALIZATION SECTION
@@ -108,6 +108,28 @@ map.on('load', () => {
         }
     });
 
+    //Adding the layer label for my city wards
+    map.addLayer ({
+        'id': 'Ward_Labels',
+        'type': 'symbol',
+        'source':'City_Wards',
+        'layout': {
+            'text-field': ['step', ['zoom'], "", 11, ['get', 'AREA_NAME']],
+            'text-variable-anchor': ['bottom'],
+            'text-radial-offset': 0.5,
+            'text-justify': 'center',
+            'text-font': [
+                'Open Sans Bold',
+                'Arial Unicode MS Bold'
+            ],
+            'text-size': 10,
+            'text-transform': 'uppercase'
+        },
+        'paint': {
+            'text-color': 'black'
+        }
+    });  
+
     // Visualizing the Neighborhoods layer 
     map.addLayer({
         'id': 'Neighbour',
@@ -116,17 +138,7 @@ map.on('load', () => {
         'layout':{},
         'paint': {
             'fill-opacity': 1,
-            'fill-color': [
-                'match',
-                ['get', 'CLASSIFICATION_CODE'],
-                'NIA',
-                '#f0e68c',
-                'NA',
-                '#e6e6fa',
-                'EN',
-                '#ff6347',
-                'white'
-            ]
+            'fill-color': '#f7f28b'
         }
     });
 
@@ -137,10 +149,32 @@ map.on('load', () => {
         'type':'line',
         'layout':{},
         'paint': {
-            'line-width': 2,
+            'line-width': 1,
             'line-color':'black'
         }
     });
+
+    //Adding a layer label for my neighborhoods 
+    map.addLayer ({
+        'id': 'Neighbourhood_Labels',
+        'type': 'symbol',
+        'source':'Neighbourhood',
+        'layout': {
+            'text-field': ['step', ['zoom'], "", 11, ['get', 'AREA_NAME']],
+            'text-variable-anchor': ['bottom'],
+            'text-radial-offset': 0.5,
+            'text-justify': 'center',
+            'text-font': [
+                'Open Sans Bold',
+                'Arial Unicode MS Bold'
+            ],
+            'text-size': 10,
+            'text-transform': 'uppercase'
+        },
+        'paint': {
+            'text-color': 'black'
+        }
+    });    
 
     //Visualizing the Tourism points using GEOID
     map.addLayer({
@@ -149,7 +183,7 @@ map.on('load', () => {
         'type':'circle',
         'paint': {    
             "circle-opacity": 1,
-            "circle-stroke-width": 1,
+            "circle-stroke-width": 1.5,
             "circle-stroke-color": '#000',
             'circle-radius': [
                 'interpolate',
@@ -201,10 +235,25 @@ map.on('load', () => {
 
             ]
         },
-        'filter':['any', 
-                ['==', ['get', 'CATEGORY'], 'Nature/ Park'],
-                ]
+        'filter':['==', ['get', 'CATEGORY'], 'Nature/ Park']
     });
+
+//Adding a layer of labels for my points 
+map.addLayer ({
+    'id': 'Tourism_Labels',
+    'type': 'symbol',
+    'source':'Tourism',
+    'layout': {
+        'text-field': ['step', ['zoom'], "", 12, ['get', 'NAME']],
+        'text-variable-anchor': ['bottom'],
+        'text-radial-offset': 0.5,
+        'text-justify': 'auto'
+    },
+    'paint': {
+        'text-color': 'black'
+    },
+    'filter':['==', ['get', 'CATEGORY'], 'Nature/ Park'] 
+});    
 
 //INTERACTIVE SECTION 
 
