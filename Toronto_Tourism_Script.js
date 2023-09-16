@@ -103,7 +103,7 @@ map.on('load', () => {
         'type': 'line',
         'layout':{},
         'paint': {
-            'line-width': 2,
+            'line-width': 0.75,
             'line-color': 'black'
         }
     });
@@ -114,7 +114,7 @@ map.on('load', () => {
         'type': 'symbol',
         'source':'City_Wards',
         'layout': {
-            'text-field': ['step', ['zoom'], "", 11, ['get', 'AREA_NAME']],
+            'text-field': ['step', ['zoom'], "", 12, ['get', 'AREA_NAME']],
             'text-variable-anchor': ['bottom'],
             'text-radial-offset': 0.5,
             'text-justify': 'center',
@@ -149,7 +149,7 @@ map.on('load', () => {
         'type':'line',
         'layout':{},
         'paint': {
-            'line-width': 1,
+            'line-width': 0.75,
             'line-color':'black'
         }
     });
@@ -160,7 +160,7 @@ map.on('load', () => {
         'type': 'symbol',
         'source':'Neighbourhood',
         'layout': {
-            'text-field': ['step', ['zoom'], "", 11, ['get', 'AREA_NAME']],
+            'text-field': ['step', ['zoom'], "", 12, ['get', 'AREA_NAME']],
             'text-variable-anchor': ['bottom'],
             'text-radial-offset': 0.5,
             'text-justify': 'center',
@@ -246,11 +246,17 @@ map.addLayer ({
     'layout': {
         'text-field': ['step', ['zoom'], "", 12, ['get', 'NAME']],
         'text-variable-anchor': ['bottom'],
-        'text-radial-offset': 0.5,
-        'text-justify': 'auto'
+        'text-radial-offset': 1.0,
+        'text-justify': 'center',
+        'text-font': [
+            'Open Sans Bold',
+            'Arial Unicode MS Bold'
+        ],
+        'text-size': 12,
+        'text-transform': 'uppercase'
     },
     'paint': {
-        'text-color': 'black'
+        'text-color': 'black',
     },
     'filter':['==', ['get', 'CATEGORY'], 'Nature/ Park'] 
 });    
@@ -271,5 +277,39 @@ map.addControl(new mapboxgl.NavigationControl());
 
 //Fullscreen option controls 
 map.addControl(new mapboxgl.FullscreenControl());
-    
+
+//Return to full screen on button click 
+document.getElementById('returnbutton').addEventListener('click', () => {
+    map.flyTo({
+        center: [-79.347015, 43.651070],
+        zoom: 9.5,
+        essential: true
+    });
+});
+
+//Adding simple click event to check if it works for Tourists points  
+map.on('click', 'Tourists', (e) => {
+    console.log(e);
+    let Attraction_Name = e.features[0].properties.NAME;
+    console.log(Attraction_Name);
+})
+
+//Adding pop - up on click event for Tourists layer
+map.on('mouseenter', 'Tourists', () => {
+    map.getCanvas().style.cursor = 'pointer';
+});
+
+map.on('mouseleave', 'Tourists', () => {
+    map.getCanvas().style.cursor = '';
+    map.setFilter("Tourists",['=='], ['get', 'NAME'], '');
+}); 
+
+map.on('click', 'Tourists', (e) => {
+    new mapboxgl.Popup()
+    .setLngLat(e.lngLat)
+    .setHTML("<b>Park/Greenspace:</b> " + e.features[0].properties.NAME + "<br>" + "<b>Address:</b> "
+    + e.features[0].properties.ADDRESS_FULL)
+    .addTo(map);
+});
+
 }); //Here is the end of the map.load function 
