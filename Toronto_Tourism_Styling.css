@@ -3,5 +3,37 @@
     position: absolute;
     top: 0;
     bottom: 0;
+    left: 0;
+    right: 0;
     width: 100%;
+}
+
+.map-overlay-search {
+    position: absolute;
+    font: 20px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        font-weight: lighter;
+    text-align: center; 
+    background: rgba(255, 255, 255, 0.938);
+    top: 0;
+    left: 0;
+    margin: 10px 0 0 10px; /*top margin, right margin, bottom margin, left margin*/
+    padding: 10px; /*around elements inside of overlay*/
+    overflow: visible;
+    border-style: solid;
+        border-color: rgb(16, 15, 15);
+        border-width: thin;
+     
+}
+
+.geocoder {
+    position: relative;
+    margin: 10px 0 10px;
+}
+
+#returnbutton {
+    position: relative;
+    font-weight: bold;
+    margin: 10px 0 10px;
+    width: 100%;
+    
 }
