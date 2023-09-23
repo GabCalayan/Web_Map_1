@@ -6,7 +6,7 @@ const map = new mapboxgl.Map ({
     container: 'map',
     style: 'mapbox://styles/heisenzilla/clhie6n9u005g01pa9setbtlq',
     center: [-79.347015, 43.651070],
-    zoom: 9,
+    zoom: 9.5,
 });
 
 //MAP VISUALIZATION SECTION
@@ -39,61 +39,8 @@ map.on('load', () => {
         'layout': {},
         'paint': {
             'fill-opacity': 0.9,
-            'fill-color': [
-                'match',
-                ['get', '_id'],
-                1,
-                '#f08080',
-                2,
-                '#fa8072',
-                3,
-                '#ffa07a',
-                4,
-                '#ffb6c1',
-                5,
-                '#ffa07a',
-                6,
-                '#ff7f50',
-                7,
-                '#ffffe0',
-                8,
-                '#ffefd5',
-                9,
-                '#ffe4b5',
-                10,
-                '#e0e680',
-                11,
-                '#e6e6fa',
-                12,
-                '#d8bfd8',
-                13,
-                '#dda0dp',
-                14,
-                '#98fb98',
-                15,
-                '#90ee90',
-                16,
-                '#8fbc8b',
-                17,
-                '#afeeee',
-                18,
-                '#e0fffe',
-                19,
-                '#b0c5de',
-                20,
+            'fill-color':
                 '#b0e0f6',
-                21,
-                '#add8e6',
-                22,
-                '#87ceeb',
-                23,
-                '#87cefa',
-                24,
-                '#ffe4c4',
-                25,
-                '#f5deb3',
-                'black'
-            ],
         }
     });
     //Visualizing the City Wards borders
@@ -103,10 +50,32 @@ map.on('load', () => {
         'type': 'line',
         'layout':{},
         'paint': {
-            'line-width': 3,
+            'line-width': 1.5,
             'line-color': 'black'
         }
     });
+
+    //Adding the layer label for my city wards
+    map.addLayer ({
+        'id': 'Ward_Labels',
+        'type': 'symbol',
+        'source':'City_Wards',
+        'layout': {
+            'text-field': ['step', ['zoom'], "", 10, ['get', 'AREA_NAME']],
+            'text-variable-anchor': ['bottom'],
+            'text-radial-offset': 0.5,
+            'text-justify': 'center',
+            'text-font': [
+                'Open Sans Bold',
+                'Arial Unicode MS Bold'
+            ],
+            'text-size': 15,
+            'text-transform': 'uppercase'
+        },
+        'paint': {
+            'text-color': 'black'
+        }
+    });  
 
     // Visualizing the Neighborhoods layer 
     map.addLayer({
@@ -116,17 +85,7 @@ map.on('load', () => {
         'layout':{},
         'paint': {
             'fill-opacity': 1,
-            'fill-color': [
-                'match',
-                ['get', 'CLASSIFICATION_CODE'],
-                'NIA',
-                '#f0e68c',
-                'NA',
-                '#e6e6fa',
-                'EN',
-                '#ff6347',
-                'white'
-            ]
+            'fill-color': '#f7f28b'
         }
     });
 
@@ -137,27 +96,117 @@ map.on('load', () => {
         'type':'line',
         'layout':{},
         'paint': {
-            'line-width': 3,
+            'line-width': 0.75,
             'line-color':'black'
         }
     });
 
-    //Visualizing the Tourism points 
+    //Adding a layer label for my neighborhoods 
+    map.addLayer ({
+        'id': 'Neighbourhood_Labels',
+        'type': 'symbol',
+        'source':'Neighbourhood',
+        'layout': {
+            'text-field': ['step', ['zoom'], "", 12, ['get', 'AREA_NAME']],
+            'text-variable-anchor': ['bottom'],
+            'text-radial-offset': 0.5,
+            'text-justify': 'center',
+            'text-font': [
+                'Open Sans Bold',
+                'Arial Unicode MS Bold'
+            ],
+            'text-size': 10,
+            'text-transform': 'uppercase'
+        },
+        'paint': {
+            'text-color': 'black'
+        }
+    });    
+
+    //Visualizing the Tourism points using GEOID
     map.addLayer({
         'id':'Tourists',
         'source':'Tourism',
         'type':'circle',
-        'paint': {
+        'paint': {    
+            "circle-opacity": 1,
+            "circle-stroke-width": 1.5,
+            "circle-stroke-color": '#000',
             'circle-radius': [
                 'interpolate',
                 ['linear'],
                 ['zoom'],
-                8, 10,
+                7, 10,
                 10, 5
             ],
-            'circle-color':'black'
+            'circle-color': [
+                'step',
+                ['get', 'GEOID'],
+                'black',
+
+                5, 'green',
+                7, 'green',
+                10, 'green',
+                11, 'green',
+                31, 'green',
+                32, 'green',
+                33, 'green',
+                35, 'green',
+                41, 'green',
+                54, 'green',
+                56, 'green',
+                58, 'green',
+                60, 'green',
+                63, 'green',
+                66, 'green',
+                68, 'green',
+                69, 'green',
+                74, 'green',
+                75, 'green',
+                79, 'green',
+                103, 'green',
+                105, 'green',
+                106, 'green',
+                107, 'green',
+                119, 'green',
+                121, 'green',
+                126, 'green',
+                142, 'green',
+                143, 'green',
+                149, 'green',
+                150, 'green',
+                165, 'green',
+                166, 'green',
+                168, 'green',
+               
+
+            ]
         },
-    })
+        'filter':['==', ['get', 'CATEGORY'], 'Nature/ Park']
+    });
+
+//Adding a layer of labels for my points 
+map.addLayer ({
+    'id': 'Tourism_Labels',
+    'type': 'symbol',
+    'source':'Tourism',
+    'layout': {
+        'text-field': ['step', ['zoom'], "", 11, ['get', 'NAME']],
+        'text-variable-anchor': ['bottom'],
+        'text-radial-offset': 1.0,
+        'text-justify': 'center',
+        'text-font': [
+            'Open Sans Bold',
+            'Arial Unicode MS Bold'
+        ],
+        'text-size': 12,
+        'text-transform': 'uppercase'
+    },
+    'paint': {
+        'text-color': 'black',
+    },
+    'filter':['==', ['get', 'CATEGORY'], 'Nature/ Park'] 
+});    
 
 //INTERACTIVE SECTION 
 
@@ -175,5 +224,145 @@ map.addControl(new mapboxgl.NavigationControl());
 
 //Fullscreen option controls 
 map.addControl(new mapboxgl.FullscreenControl());
+
+//Return to full screen on button click 
+document.getElementById('returnbutton').addEventListener('click', () => {
+    map.flyTo({
+        center: [-79.347015, 43.651070],
+        zoom: 9.5,
+        essential: true
+    });
+});
+
+//Adding simple click event to check if it works for Tourists points  
+map.on('click', 'Tourists', (e) => {
+    console.log(e);
+    let Attraction_Name = e.features[0].properties.NAME;
+    console.log(Attraction_Name);
+})
+
+//Adding pop - up on click event for Tourists layer
+map.on('mouseenter', 'Tourists', () => {
+    map.getCanvas().style.cursor = 'pointer';
+});
+
+map.on('mouseleave', 'Tourists', () => {
+    map.getCanvas().style.cursor = '';
+    map.setFilter("Tourists",['=='], ['get', 'NAME'], '');
+}); 
+
+map.on('click', 'Tourists', (e) => {
+    new mapboxgl.Popup()
+    .setLngLat(e.lngLat)
+    .setHTML("<b>Park/Greenspace:</b> " + e.features[0].properties.NAME + "<br>" + "<b>Address:</b> "
+    + e.features[0].properties.ADDRESS_FULL)
+    .addTo(map);
+});
+
+//Change display of Ward layer based on check box 
+document.getElementById('LayerFlexCheck1').addEventListener('change', (e) => {
+    map.setLayoutProperty(
+        'Neighbour',
+        'visibility',
+        e.target.checked ? 'visible': 'none'
+    );
+});
+
+document.getElementById('LayerFlexCheck1').addEventListener('change', (e) => {
+    map.setLayoutProperty(
+        'Neighbourhood_Labels',
+        'visibility',
+        e.target.checked ? 'visible': 'none'
+    );
+});
+
+document.getElementById('LayerFlexCheck1').addEventListener('change', (e) => {
+    map.setLayoutProperty(
+        'outline_2',
+        'visibility',
+        e.target.checked ? 'visible': 'none'
+    );
+});
+
+//Change display of Ward layer based on check box 
+document.getElementById('LayerFlexCheck2').addEventListener('change', (e) => {
+    map.setLayoutProperty(
+        'Ward',
+        'visibility',
+        e.target.checked ? 'visible': 'none'
+    );
+});
+
+document.getElementById('LayerFlexCheck2').addEventListener('change', (e) => {
+    map.setLayoutProperty(
+        'Ward_Labels',
+        'visibility',
+        e.target.checked ? 'visible': 'none'
+    );
+});
+
+document.getElementById('LayerFlexCheck2').addEventListener('change', (e) => {
+    map.setLayoutProperty(
+        'outline_1',
+        'visibility',
+        e.target.checked ? 'visible': 'none'
+    );
+});
+
+//Change display of Tourism layer based on check box 
+document.getElementById('LayerFlexCheck3').addEventListener('change', (e) => {
+    map.setLayoutProperty(
+        'Tourists',
+        'visibility',
+        e.target.checked ? 'visible': 'none'
+    );
+});
+
+document.getElementById('LayerFlexCheck3').addEventListener('change', (e) => {
+    map.setLayoutProperty(
+        'Tourism_Labels',
+        'visibility',
+        e.target.checked ? 'visible': 'none'
+    );
+});
+
+//LEGEND SECTION 
+const legendlabels = [
+    'Park/Greenspaces',
+    'Neighbourhoods',
+    'Wards',
+]
+
+const legendcolours = [
+    'green',
+    '#f7f28b',
+    '#b0e0f6'
+];
+
+//Calling the legend from HTML 
+const legend = document.getElementById('Legend');
+
+
+legendlabels.forEach((label,i) => { 
+    const color = legendcolours[i]; 
+
+    const item = document.createElement('div'); 
+    const key = document.createElement('span'); 
+
+    key.className = 'legend-key';  
+    key.style.backgroundColor = color; 
+
+    const value = document.createElement('span');
+    value.innerHTML = `${label}`;
+
+    item.appendChild(key); 
+    item.appendChild(value);
     
-}); //Here is the end of the map.load function 
+    legend.appendChild(item);
+
+}); 
+
+
+
+}); //Here is the end of the map.load function
+
