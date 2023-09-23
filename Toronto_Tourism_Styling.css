@@ -1,12 +1,71 @@
+/* Added a smooth scroll behaviour */
+html {
+    scroll-behavior: smooth;
+}
+
+
 /* Added some simple stylings for my map class */
 .map {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
+    top: 125px;
+    bottom: 0px;
+    left: 35px;
+    width: 95%;
+    
 }
+/* Added some simply stylings for my title */
+h2 {
+    font-family: "Lucida Console", "Courier New", monospace;
+    font-size: 14px;
+    text-align: left;
+}
+
+/* Added stylings for my image */
+img {
+    border-style: solid;
+        border-color: gray;
+        border-width: thin;
+        border-radius: 0%;
+    top: 5px;
+    left: 5px;
+    width: 100px;
+    height: 100px;
+    position: relative;
+    bottom: 2px;
+}
+
+/* Styling the legend and its necessary components */
+.legend {
+    position: relative; 
+    background-color: #fff;
+    border-style: solid;
+        border-color: black;
+        border-width: medium; 
+        border-radius: 3px;
+    width: 100%;
+    top: 15px;    
+    left: -20px;
+    margin: 10px 0 0 10px;
+    font: 14px/20px 'Times New Roman', sans-serif;
+    padding: 10px;
+    overflow: visible;
+
+    z-index: 1;
+
+}
+
+.legend h3 {
+    margin: 0 0 10px;
+}
+
+.legend-key {
+    display: inline-block;
+    border-radius: 50%; 
+    height: 10px; 
+    width: 10px;
+    margin-right: 5px; 
+}
+
 
 .map-overlay-search {
     position: absolute;
@@ -14,15 +73,35 @@
         font-weight: lighter;
     text-align: center; 
     background: rgba(255, 255, 255, 0.938);
-    top: 0;
-    left: 0;
-    margin: 10px 0 0 10px; /*top margin, right margin, bottom margin, left margin*/
-    padding: 10px; /*around elements inside of overlay*/
+    top: 30px;
+    left: 30px;
+    margin: 100px 0 0 10px; 
+    padding: 10px; 
     overflow: visible;
     border-style: solid;
         border-color: rgb(16, 15, 15);
-        border-width: thin;
+        border-width: medium;
+        border-radius: 10px;
      
+}
+
+.map-overlay-data {
+    position: relative;
+    font: 14px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    background: rgba(255, 255, 255, 0.938);
+    height: 125px;;
+    width: 180px;
+    top: -20px;
+    left: 30px;
+    bottom: 0;
+    margin: 170px 0 0 10px;
+    padding: 10px;
+    overflow: visible;
+    border-style: solid;
+        border-color: rgb(16, 15, 15);
+        border-width: medium;
+        border-radius: 10px;
+ 
 }
 
 .geocoder {
